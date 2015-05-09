@@ -2,7 +2,7 @@
  * Sample Server following the tutorial:
  * 
  * You can start the server by performing the following command in another file:
- * nodeServer4334 = require("./myTestSampleServer.js").newOpcuaServer(4334);
+ * nodeServer4334 = require("./opcua-server").newOpcuaServer(4334);
  * 
  * http://node-opcua.github.io/create_a_server.html
  * 
@@ -17,6 +17,7 @@ exports.newOpcuaServer = function(portNumber) {
   var serverVars = new Array();
   var localVars = new Array();
   var server;
+  var baseNodeId;
 
   server = new opcua.OPCUAServer({
     port : portNumber
@@ -25,92 +26,74 @@ exports.newOpcuaServer = function(portNumber) {
   // optional
   server.buildInfo.productName = "MySampleServer1";
   server.buildInfo.buildNumber = "7658";
-  server.buildInfo.buildDate = new Date(2014, 5, 2);
+  server.buildInfo.buildDate = new Date(2015, 5, 8);
 
   function construct_my_address_space(server) {
+    // Create Output
+    createOpcuaFolder("Module1101", "RootFolder");
+    createOpcuaFolder("Output", "Module1101");
+    baseNodeId = 'MI5.Module1101.Output';
+    createMI5Variable(baseNodeId, 'Name', 'Output Dummy', 'String');
+    createMI5Variable(baseNodeId, 'ID', 4123, 'Double');
+    createMI5Variable(baseNodeId, 'Idle', true, 'Boolean');
+    createMI5Variable(baseNodeId, 'Connected', true, 'Boolean');
+    createMI5Variable(baseNodeId, 'ConnectionTestOutput', 3, 'Double');
+    createMI5Variable(baseNodeId, 'Error', false, 'Boolean');
+    createMI5Variable(baseNodeId, 'ErrorID', 0, 'Double');
+    createMI5Variable(baseNodeId, 'ErrorDescription', '', 'String');
+    createMI5Variable(baseNodeId, 'CurrentTaskDescription', '', 'String');
+    createMI5Variable(baseNodeId, 'PositionSensor', false, 'Boolean');
 
-    // declare some folders
-    server.engine.createFolder("RootFolder", {
-      browseName : "Module1101"
-    });
-    server.engine.createFolder("Module1101", {
-      browseName : "Output"
-    });
+    // Add SkillOutput
+    createOpcuaFolder("SkillOutput", "Output");
+    createOpcuaFolder("SkillOutput0", "SkillOutput");
+    baseNodeId = 'MI5.Module1101.Output.SkillOutput.SkillOutput0';
+    createMI5Variable(baseNodeId, 'Dummy', true, 'Boolean');
+    createMI5Variable(baseNodeId, 'ID', 74821, 'Double');
+    createMI5Variable(baseNodeId, 'Name', 'DummySkill', 'String');
+    createMI5Variable(baseNodeId, 'Activated', true, 'Boolean');
+    createMI5Variable(baseNodeId, 'Ready', true, 'Boolean');
+    createMI5Variable(baseNodeId, 'Busy', false, 'Boolean');
+    createMI5Variable(baseNodeId, 'Done', false, 'Boolean');
+    createMI5Variable(baseNodeId, 'Error', false, 'Boolean');
 
-    // Add Output Variables
-    createOpcuaVariable('MI5.Module1101.Output.Dummy', 'Dummy', 'Output', 'Double', 1);
-    createOpcuaVariable('MI5.Module1101.Output.Name', 'Name', 'Output', 'String', 'OutputName');
-    createOpcuaVariable('MI5.Module1101.Output.ID', 'ID', 'Output', 'Double', 42123);
-    createOpcuaVariable('MI5.Module1101.Output.Idle', 'Idle', 'Output', 'Double', 1);
-    createOpcuaVariable('MI5.Module1101.Output.Connected', 'Connected', 'Output', 'Double', 1);
-    createOpcuaVariable('MI5.Module1101.Output.ConnectionTestOutput', 'ConnectionTestOutput',
-        'Output', 'Double', 3);
-    createOpcuaVariable('MI5.Module1101.Output.Error', 'Error', 'Output', 'Double', 0);
-    createOpcuaVariable('MI5.Module1101.Output.ErrorID', 'ErrorID', 'Output', 'Double', 0);
-    createOpcuaVariable('MI5.Module1101.Output.ErrorDescription', 'ErrorDescription', 'Output',
-        'String', '');
-    createOpcuaVariable('MI5.Module1101.Output.CurrentTaskDescription', 'CurrentTaskDescription',
-        'Output', 'String', '');
-    createOpcuaVariable('MI5.Module1101.Output.PositionSensor', 'PositionSensor', 'Output',
-        'Double', 0);
+    // createOpcuaFolder("ParameterOutput", "SkillOutput0");
+    // createOpcuaFolder("ParameterOutput0", "ParameterOutput");
+    // baseNodeId =
+    // 'MI5.Module1101.Output.SkillOutput.SkillOutput0.ParameterOutput.ParameterOutput0';
+    // createMI5Variable(baseNodeId, 'Dummy', 0);
+    // createMI5Variable(baseNodeId, 'ID', 1);
+    // createMI5Variable(baseNodeId, 'Name', 'Erster', 'String');
+    // createMI5Variable(baseNodeId, 'Unit', 'm/s', 'String');
+    // createMI5Variable(baseNodeId, 'Required', 1);
+    // createMI5Variable(baseNodeId, 'Default', 50);
+    // createMI5Variable(baseNodeId, 'MinValue', 0);
+    // createMI5Variable(baseNodeId, 'MaxValue', 100);
 
-    // Add Second SkillOutput and SkillOutput Folders
-    server.engine.createFolder("Output", {
-      browseName : "SkillOutput"
+    // Create Input
+    createOpcuaFolder("Input", "Module1101");
+    createOpcuaFolder("SkillInput", "Input");
+    createOpcuaFolder("SkillInput0", "SkillInput");
+    baseNodeId = 'MI5.Module1101.Input.SkillInput.SkillInput0';
+    createMI5Variable(baseNodeId, 'Execute', false, 'Boolean');
+    var var_myexecute = false;
+    server.myexecute = server.engine.addVariableInFolder('SkillInput0', {
+      nodeId : 'ns=4;s=MI5.Module1101.Input.SkillInput.SkillInput0.myexecute',
+      browseName : 'myexecute',
+      dataType : 'Boolean',
+      value : {
+        get : function() {
+          return new opcua.Variant({
+            dataType : opcua.DataType['Boolean'],
+            value : var_myexecute
+          });
+        },
+        set : function(variant) {
+          var_myexecute = variant.value;
+          return opcua.StatusCodes.Good;
+        }
+      }
     });
-    server.engine.createFolder("SkillOutput", {
-      browseName : "SkillOutput1"
-    });
-    var skillOutput = 'MI5.Module1101.Output.SkillOutput.SkillOutput1';
-    createMI5Variable(skillOutput, 'Dummy', 0);
-    createMI5Variable(skillOutput, 'ID', 74821);
-    createMI5Variable(skillOutput, 'Name', 'DummySkill', 'String');
-    createMI5Variable(skillOutput, 'Activated', 0);
-    createMI5Variable(skillOutput, 'Ready', 1);
-    createMI5Variable(skillOutput, 'Busy', 0);
-    createMI5Variable(skillOutput, 'Done', 0);
-    createMI5Variable(skillOutput, 'Error', 0);
-
-    server.engine.createFolder("SkillOutput1", {
-      browseName : "ParameterOutput"
-    });
-    server.engine.createFolder("ParameterOutput", {
-      browseName : "ParameterOutput0"
-    });
-    var parameterOutput = 'MI5.Module1101.Output.SkillOutput.SkillOutput1.ParameterOutput.ParameterOutput0';
-    createMI5Variable(parameterOutput, 'Dummy', 0);
-    createMI5Variable(parameterOutput, 'ID', 1);
-    createMI5Variable(parameterOutput, 'Name', 'Erster', 'String');
-    createMI5Variable(parameterOutput, 'Unit', 'm/s', 'String');
-    createMI5Variable(parameterOutput, 'Required', 1);
-    createMI5Variable(parameterOutput, 'Default', 50);
-    createMI5Variable(parameterOutput, 'MinValue', 0);
-    createMI5Variable(parameterOutput, 'MaxValue', 100);
-    server.engine.createFolder("ParameterOutput", {
-      browseName : "ParameterOutput1"
-    });
-    var parameterOutput = 'MI5.Module1101.Output.SkillOutput.SkillOutput1.ParameterOutput.ParameterOutput1';
-    createMI5Variable(parameterOutput, 'Dummy', 0);
-    createMI5Variable(parameterOutput, 'ID', 2);
-    createMI5Variable(parameterOutput, 'Name', 'Zweiter', 'String');
-    createMI5Variable(parameterOutput, 'Unit', 'm/s', 'String');
-    createMI5Variable(parameterOutput, 'Required', 1);
-    createMI5Variable(parameterOutput, 'Default', 50);
-    createMI5Variable(parameterOutput, 'MinValue', 0);
-    createMI5Variable(parameterOutput, 'MaxValue', 100);
-    server.engine.createFolder("ParameterOutput", {
-      browseName : "ParameterOutput2"
-    });
-    var parameterOutput = 'MI5.Module1101.Output.SkillOutput.SkillOutput1.ParameterOutput.ParameterOutput2';
-    createMI5Variable(parameterOutput, 'Dummy', 0);
-    createMI5Variable(parameterOutput, 'ID', 3);
-    createMI5Variable(parameterOutput, 'Name', 'Dritter', 'String');
-    createMI5Variable(parameterOutput, 'Unit', 'm/s', 'String');
-    createMI5Variable(parameterOutput, 'Required', 1);
-    createMI5Variable(parameterOutput, 'Default', 10);
-    createMI5Variable(parameterOutput, 'MinValue', 5);
-    createMI5Variable(parameterOutput, 'MaxValue', 30);
-
   }
 
   function post_initialize() {
@@ -156,6 +139,13 @@ exports.newOpcuaServer = function(portNumber) {
    */
   function explodeNodeId(nodeId) {
     return nodeId.split('.');
+  }
+
+  function createOpcuaFolder(folder, parentFolder) {
+    server.engine.createFolder(parentFolder, {
+      browseName : folder
+    });
+
   }
 
   function createMI5Variable(baseNodeId, variableName, defaultValue, variableType) {
@@ -216,109 +206,6 @@ exports.newOpcuaServer = function(portNumber) {
       }
     });
     console.log('Variable ', DisplayName, ' added');
-    return randomString;
+    return localVars[currentElement];
   }
-
-  function doubleOpcua(DefaultValue, Description) {
-    var currentElement = localVars.length;
-    localVars[currentElement] = DefaultValue;
-    var newServerVar = server.engine.addVariableInFolder("MyDevice", {
-      // nodeId: "ns=4;b=1020FFAA", // some opaque NodeId in namespace 4
-      // (optional)
-      browseName : Description,
-      dataType : "Double",
-      value : {
-        get : function() {
-          return new opcua.Variant({
-            dataType : opcua.DataType.Double,
-            value : localVars[currentElement]
-          });
-        },
-        set : function(variant) {
-          localVars[currentElement] = parseFloat(variant.value);
-          return opcua.StatusCodes.Good;
-        }
-      }
-    });
-    console.log('Variable ', Description, ' added');
-    return newServerVar;
-  }
-  ;
-  function stringOpcua(DefaultValue, Description, desiredNodeId) {
-    desiredNodeId = typeof desiredNodeId !== 'undefined' ? ('ns=4;s=' + desiredNodeId) : '';
-    randomString = makeServerVariable();
-
-    var currentElement = localVars.length;
-    localVars[currentElement] = DefaultValue;
-    server[randomString] = server.engine.addVariableInFolder("MyDevice", {
-      nodeId : desiredNodeId, // some opaque NodeId in namespace 4 (optional)
-      // "ns=4s=GVL.OPCModule.Output.Skill;
-      browseName : Description,
-      dataType : "String",
-      value : {
-        get : function() {
-          return new opcua.Variant({
-            dataType : opcua.DataType.String,
-            value : localVars[currentElement]
-          });
-        },
-        set : function(variant) {
-          localVars[currentElement] = variant.value;
-          return opcua.StatusCodes.Good;
-        }
-      }
-    });
-    console.log('Variable ', Description, ' added');
-    return randomString;
-  }
-  ;
-
-  function doubleOpcuaVariable(variable, Description) {
-    var newServerNodeVariable = server.engine.addVariableInFolder("MyDevice", {
-      // nodeId: "ns=4;b=1020FFAA", // some opaque NodeId in namespace 4
-      // (optional)
-      browseName : Description,
-      dataType : "Double",
-      value : {
-        get : function() {
-          return new opcua.Variant({
-            dataType : opcua.DataType.Double,
-            value : variable
-          });
-        },
-        set : function(variant) {
-          variable = parseFloat(variant.value);
-          return opcua.StatusCodes.Good;
-        }
-      }
-    });
-    console.log('Variable ', Description, ' added');
-    return newServerNodeVariable;
-  }
-  ;
-  function stringOpcuaVariable(variable, Description) {
-    var newServerNodeVariable = server.engine.addVariableInFolder("MyDevice", {
-      // nodeId: "ns=4;b=1020FFAA", // some opaque NodeId in namespace 4
-      // (optional)
-      browseName : Description,
-      dataType : "String",
-      value : {
-        get : function() {
-          return new opcua.Variant({
-            dataType : opcua.DataType.String,
-            value : variable
-          });
-        },
-        set : function(variant) {
-          variable = variant.value; // comes in as a string
-          return opcua.StatusCodes.Good;
-        }
-      }
-    });
-    console.log('Variable ', Description, ' added');
-    return newServerNodeVariable;
-  }
-  ;
-
-  return server;
 }; // very first export of this file
