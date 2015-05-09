@@ -8,6 +8,7 @@ Generic Module Interface on OPC UA with JavaScript.
 3. Configure the Module interface in _opcua-server.js_
  1. You need to adapt the ModuleNumber on several places. Currently it is all: `Module1101`
     There you would need to adapt the Module Number, use search and replace
+4. Start the Module Interface: `node app.js`
     
 ## Notes
 
