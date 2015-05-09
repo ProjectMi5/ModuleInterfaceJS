@@ -5,10 +5,14 @@
 require("./opcua-server.js").newOpcuaServer();
 var opcua = require("./opcua-server.js");
 
-// EXAMPLE:
-// Check execute value every 1s
-// set it back to false
-var laststate;
+function work() {
+  console.log('working...');
+  opcua.setBusy(false);
+  opcua.setDone(true);
+}
+var work = _.once(work);
+
+// Implement easy state machine
 setInterval(function() {
   var state = {
     execute : opcua.getExecute(),
@@ -17,9 +21,17 @@ setInterval(function() {
     done : opcua.getDone(),
     error : opcua.getError()
   }
-  console.log(state);
 
-  if (opcua.getExecute() == true) {
-    opcua.setExecute(false);
+  // Incoming Execute === TRUE
+  if (state.execute === true && state.ready === true && state.busy === false
+      && state.done === false) {
+    opcua.setReady(false);
+    opcua.setDone(true);
   }
-}, 1000);
+
+  // Go back to idle state after execution
+  if (state.done === true && state.execute === false) {
+    opcua.setDone(false);
+    opcua.setReady(true);
+  }
+}, 500);
