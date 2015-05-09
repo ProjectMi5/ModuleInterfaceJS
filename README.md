@@ -13,7 +13,7 @@ Generic Module Interface on OPC UA with JavaScript.
 ## Usage
 
 In `app.js` use the _get/set-Functions_ to access the state values. Example:
-* get the Execute value: `opcua.getExecute` 
+* get the Execute value: `opcua.getExecute()` 
 * set the Execute value: `opcua.setExecute()`
 
 Implemented state values: Execute, Ready, Busy, Done, Error
