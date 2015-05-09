@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/ProjectMi5/ModuleInterfaceJS",
   "dependencies": {
-    "node-opcua": "0.0.46",
+    "node-opcua": "0.0.30",
     "underscore": "^1.8.3"
   }
 }
