@@ -2,17 +2,22 @@
  * Start one instance of the OPC UA Server
  */
 
-nodeServer4334 = require("./opcua-server.js").newOpcuaServer(4334);
+require("./opcua-server.js").newOpcuaServer();
 var opcua = require("./opcua-server.js");
 
+// EXAMPLE:
 // Check execute value every 1s
 // set it back to false
+var laststate;
 setInterval(function() {
-  console.log('opcuaReady', opcua.getReady());
-  console.log('opcuaBusy', opcua.getBusy());
-  console.log('opcuaDone', opcua.getDone());
-  console.log('opcuaError', opcua.getError());
-  console.log('opcuaExecute', opcua.getExecute());
+  var state = {
+    execute : opcua.getExecute(),
+    ready : opcua.getReady(),
+    busy : opcua.getBusy(),
+    done : opcua.getDone(),
+    error : opcua.getError()
+  }
+  console.log(state);
 
   if (opcua.getExecute() == true) {
     opcua.setExecute(false);

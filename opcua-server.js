@@ -10,7 +10,7 @@
  */
 var _ = require('underscore');
 
-var opcuaReady = false;
+var opcuaReady = true;
 exports.getReady = function() {
   return opcuaReady;
 };
@@ -46,7 +46,9 @@ exports.setExecute = function(value) {
   opcuaExecute = value;
 }
 
-exports.newOpcuaServer = function(portNumber) {
+exports.newOpcuaServer = function() {
+  var portNumber = 4840;
+  var moduleName = 'Module3101';
 
   var opcua = require("node-opcua");
 
@@ -60,15 +62,15 @@ exports.newOpcuaServer = function(portNumber) {
   });
 
   // optional
-  server.buildInfo.productName = "MySampleServer1";
+  server.buildInfo.productName = moduleName;
   server.buildInfo.buildNumber = "7658";
   server.buildInfo.buildDate = new Date(2015, 5, 8);
 
   function construct_my_address_space(server) {
     // Create Output
-    createOpcuaFolder("Module1101", "RootFolder");
-    createOpcuaFolder("Output", "Module1101");
-    baseNodeId = 'MI5.Module1101.Output';
+    createOpcuaFolder(moduleName, "RootFolder");
+    createOpcuaFolder("Output", moduleName);
+    baseNodeId = 'MI5.' + moduleName + '.Output';
     createMI5Variable(baseNodeId, 'Name', 'Output Dummy', 'String');
     createMI5Variable(baseNodeId, 'ID', 4123, 'Double');
     createMI5Variable(baseNodeId, 'Idle', true, 'Boolean');
@@ -83,13 +85,13 @@ exports.newOpcuaServer = function(portNumber) {
     // Add SkillOutput
     createOpcuaFolder("SkillOutput", "Output");
     createOpcuaFolder("SkillOutput0", "SkillOutput");
-    baseNodeId = 'MI5.Module1101.Output.SkillOutput.SkillOutput0';
+    baseNodeId = 'MI5.' + moduleName + '.Output.SkillOutput.SkillOutput0';
     createMI5Variable(baseNodeId, 'Dummy', true, 'Boolean');
     createMI5Variable(baseNodeId, 'ID', 74821, 'Double');
     createMI5Variable(baseNodeId, 'Name', 'DummySkill', 'String');
     createMI5Variable(baseNodeId, 'Activated', true, 'Boolean');
     server.myexecute = server.engine.addVariableInFolder('SkillOutput0', {
-      nodeId : 'ns=4;s=MI5.Module1101.Output.SkillOutput.SkillOutput0.Ready',
+      nodeId : 'ns=4;s=MI5.' + moduleName + '.Output.SkillOutput.SkillOutput0.Ready',
       browseName : 'Ready',
       dataType : 'Boolean',
       value : {
@@ -106,7 +108,7 @@ exports.newOpcuaServer = function(portNumber) {
       }
     });
     server.myexecute = server.engine.addVariableInFolder('SkillOutput0', {
-      nodeId : 'ns=4;s=MI5.Module1101.Output.SkillOutput.SkillOutput0.Busy',
+      nodeId : 'ns=4;s=MI5.' + moduleName + '.Output.SkillOutput.SkillOutput0.Busy',
       browseName : 'Busy',
       dataType : 'Boolean',
       value : {
@@ -123,7 +125,7 @@ exports.newOpcuaServer = function(portNumber) {
       }
     });
     server.myexecute = server.engine.addVariableInFolder('SkillOutput0', {
-      nodeId : 'ns=4;s=MI5.Module1101.Output.SkillOutput.SkillOutput0.Done',
+      nodeId : 'ns=4;s=MI5.' + moduleName + '.Output.SkillOutput.SkillOutput0.Done',
       browseName : 'Done',
       dataType : 'Boolean',
       value : {
@@ -140,7 +142,7 @@ exports.newOpcuaServer = function(portNumber) {
       }
     });
     server.myexecute = server.engine.addVariableInFolder('SkillOutput0', {
-      nodeId : 'ns=4;s=MI5.Module1101.Output.SkillOutput.SkillOutput0.Error',
+      nodeId : 'ns=4;s=MI5.' + moduleName + '.Output.SkillOutput.SkillOutput0.Error',
       browseName : 'Error',
       dataType : 'Boolean',
       value : {
@@ -160,7 +162,7 @@ exports.newOpcuaServer = function(portNumber) {
     // createOpcuaFolder("ParameterOutput", "SkillOutput0");
     // createOpcuaFolder("ParameterOutput0", "ParameterOutput");
     // baseNodeId =
-    // 'MI5.Module1101.Output.SkillOutput.SkillOutput0.ParameterOutput.ParameterOutput0';
+    // 'MI5.'+moduleName+'.Output.SkillOutput.SkillOutput0.ParameterOutput.ParameterOutput0';
     // createMI5Variable(baseNodeId, 'Dummy', 0);
     // createMI5Variable(baseNodeId, 'ID', 1);
     // createMI5Variable(baseNodeId, 'Name', 'Erster', 'String');
@@ -171,12 +173,12 @@ exports.newOpcuaServer = function(portNumber) {
     // createMI5Variable(baseNodeId, 'MaxValue', 100);
 
     // Create Input
-    createOpcuaFolder("Input", "Module1101");
+    createOpcuaFolder("Input", moduleName);
     createOpcuaFolder("SkillInput", "Input");
     createOpcuaFolder("SkillInput0", "SkillInput");
-    baseNodeId = 'MI5.Module1101.Input.SkillInput.SkillInput0';
+    baseNodeId = 'MI5.' + moduleName + '.Input.SkillInput.SkillInput0';
     server.myexecute = server.engine.addVariableInFolder('SkillInput0', {
-      nodeId : 'ns=4;s=MI5.Module1101.Input.SkillInput.SkillInput0.Execute',
+      nodeId : 'ns=4;s=MI5.' + moduleName + '.Input.SkillInput.SkillInput0.Execute',
       browseName : 'Execute',
       dataType : 'Boolean',
       value : {

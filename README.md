@@ -10,6 +10,14 @@ Generic Module Interface on OPC UA with JavaScript.
     There you would need to adapt the Module Number, use search and replace
 4. Start the Module Interface: `node app.js`
     
+## Usage
+
+In `app.js` use the _get/set-Functions_ to access the state values. Example:
+* get the Execute value: `opcua.getExecute` 
+* set the Execute value: `opcua.setExecute()`
+
+Implemented state values: Execute, Ready, Busy, Done, Error
+
 ## Notes
 
 It only works with node-opcua v 0.0.30 (see package.json)
