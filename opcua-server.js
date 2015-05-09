@@ -10,6 +10,42 @@
  */
 var _ = require('underscore');
 
+var opcuaReady = false;
+exports.getReady = function() {
+  return opcuaReady;
+};
+exports.setReady = function(value) {
+  opcuaReady = value;
+}
+var opcuaBusy = false;
+exports.getBusy = function() {
+  return opcuaBusy;
+};
+exports.setBusy = function(value) {
+  opcuaBusy = value;
+}
+var opcuaDone = false;
+exports.getDone = function() {
+  return opcuaDone;
+};
+exports.setDone = function(value) {
+  opcuaDone = value;
+}
+var opcuaError = false;
+exports.getError = function() {
+  return opcuaError;
+};
+exports.setError = function(value) {
+  opcuaError = value;
+}
+var opcuaExecute = false;
+exports.getExecute = function() {
+  return opcuaExecute;
+};
+exports.setExecute = function(value) {
+  opcuaExecute = value;
+}
+
 exports.newOpcuaServer = function(portNumber) {
 
   var opcua = require("node-opcua");
@@ -52,7 +88,6 @@ exports.newOpcuaServer = function(portNumber) {
     createMI5Variable(baseNodeId, 'ID', 74821, 'Double');
     createMI5Variable(baseNodeId, 'Name', 'DummySkill', 'String');
     createMI5Variable(baseNodeId, 'Activated', true, 'Boolean');
-    var opcuaReady = false;
     server.myexecute = server.engine.addVariableInFolder('SkillOutput0', {
       nodeId : 'ns=4;s=MI5.Module1101.Output.SkillOutput.SkillOutput0.Ready',
       browseName : 'Ready',
@@ -70,7 +105,6 @@ exports.newOpcuaServer = function(portNumber) {
         }
       }
     });
-    var opcuaBusy = false;
     server.myexecute = server.engine.addVariableInFolder('SkillOutput0', {
       nodeId : 'ns=4;s=MI5.Module1101.Output.SkillOutput.SkillOutput0.Busy',
       browseName : 'Busy',
@@ -88,7 +122,6 @@ exports.newOpcuaServer = function(portNumber) {
         }
       }
     });
-    var opcuaDone = false;
     server.myexecute = server.engine.addVariableInFolder('SkillOutput0', {
       nodeId : 'ns=4;s=MI5.Module1101.Output.SkillOutput.SkillOutput0.Done',
       browseName : 'Done',
@@ -106,7 +139,6 @@ exports.newOpcuaServer = function(portNumber) {
         }
       }
     });
-    var opcuaError = false;
     server.myexecute = server.engine.addVariableInFolder('SkillOutput0', {
       nodeId : 'ns=4;s=MI5.Module1101.Output.SkillOutput.SkillOutput0.Error',
       browseName : 'Error',
@@ -125,24 +157,24 @@ exports.newOpcuaServer = function(portNumber) {
       }
     });
 
-    createOpcuaFolder("ParameterOutput", "SkillOutput0");
-    createOpcuaFolder("ParameterOutput0", "ParameterOutput");
-    baseNodeId = 'MI5.Module1101.Output.SkillOutput.SkillOutput0.ParameterOutput.ParameterOutput0';
-    createMI5Variable(baseNodeId, 'Dummy', 0);
-    createMI5Variable(baseNodeId, 'ID', 1);
-    createMI5Variable(baseNodeId, 'Name', 'Erster', 'String');
-    createMI5Variable(baseNodeId, 'Unit', 'm/s', 'String');
-    createMI5Variable(baseNodeId, 'Required', 1);
-    createMI5Variable(baseNodeId, 'Default', 50);
-    createMI5Variable(baseNodeId, 'MinValue', 0);
-    createMI5Variable(baseNodeId, 'MaxValue', 100);
+    // createOpcuaFolder("ParameterOutput", "SkillOutput0");
+    // createOpcuaFolder("ParameterOutput0", "ParameterOutput");
+    // baseNodeId =
+    // 'MI5.Module1101.Output.SkillOutput.SkillOutput0.ParameterOutput.ParameterOutput0';
+    // createMI5Variable(baseNodeId, 'Dummy', 0);
+    // createMI5Variable(baseNodeId, 'ID', 1);
+    // createMI5Variable(baseNodeId, 'Name', 'Erster', 'String');
+    // createMI5Variable(baseNodeId, 'Unit', 'm/s', 'String');
+    // createMI5Variable(baseNodeId, 'Required', 1);
+    // createMI5Variable(baseNodeId, 'Default', 50);
+    // createMI5Variable(baseNodeId, 'MinValue', 0);
+    // createMI5Variable(baseNodeId, 'MaxValue', 100);
 
     // Create Input
     createOpcuaFolder("Input", "Module1101");
     createOpcuaFolder("SkillInput", "Input");
     createOpcuaFolder("SkillInput0", "SkillInput");
     baseNodeId = 'MI5.Module1101.Input.SkillInput.SkillInput0';
-    var opcuaExecute = false;
     server.myexecute = server.engine.addVariableInFolder('SkillInput0', {
       nodeId : 'ns=4;s=MI5.Module1101.Input.SkillInput.SkillInput0.Execute',
       browseName : 'Execute',
@@ -276,3 +308,4 @@ exports.newOpcuaServer = function(portNumber) {
     return localVars[currentElement];
   }
 }; // very first export of this file
+
