@@ -1,0 +1,30 @@
+{
+  "name": "ModuleInterfaceJS",
+  "version": "0.0.1",
+  "description": "Module Interface for Showcase Mi5 in JS",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ProjectMi5/ModuleInterfaceJS.git"
+  },
+  "keywords": [
+    "opcua",
+    "showcase",
+    "mi5",
+    "mi5",
+    "js"
+  ],
+  "author": "Thomas Frei",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ProjectMi5/ModuleInterfaceJS/issues"
+  },
+  "homepage": "https://github.com/ProjectMi5/ModuleInterfaceJS",
+  "dependencies": {
+    "node-opcua": "0.0.46",
+    "underscore": "^1.8.3"
+  }
+}
