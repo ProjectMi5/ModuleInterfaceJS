@@ -48,7 +48,7 @@ exports.setExecute = function(value) {
 
 exports.newOpcuaServer = function() {
   var portNumber = 4840;
-  var moduleName = 'Module3101';
+  var moduleName = 'Module2502';
 
   var opcua = require("node-opcua");
 
@@ -72,10 +72,10 @@ exports.newOpcuaServer = function() {
     createOpcuaFolder("Output", moduleName);
     baseNodeId = 'MI5.' + moduleName + '.Output';
     createMI5Variable(baseNodeId, 'Name', 'Output Dummy', 'String');
-    createMI5Variable(baseNodeId, 'ID', 4123, 'Double');
+    createMI5Variable(baseNodeId, 'ID', 2502, 'Double');
     createMI5Variable(baseNodeId, 'Idle', true, 'Boolean');
     createMI5Variable(baseNodeId, 'Connected', true, 'Boolean');
-    createMI5Variable(baseNodeId, 'ConnectionTestOutput', 3, 'Double');
+    //createMI5Variable(baseNodeId, 'ConnectionTestOutput', false, 'Boolean'); //deactivated in PT
     createMI5Variable(baseNodeId, 'Error', false, 'Boolean');
     createMI5Variable(baseNodeId, 'ErrorID', 0, 'Double');
     createMI5Variable(baseNodeId, 'ErrorDescription', '', 'String');
@@ -86,8 +86,8 @@ exports.newOpcuaServer = function() {
     createOpcuaFolder("SkillOutput", "Output");
     createOpcuaFolder("SkillOutput0", "SkillOutput");
     baseNodeId = 'MI5.' + moduleName + '.Output.SkillOutput.SkillOutput0';
-    createMI5Variable(baseNodeId, 'Dummy', true, 'Boolean');
-    createMI5Variable(baseNodeId, 'ID', 74821, 'Double');
+    createMI5Variable(baseNodeId, 'Dummy', false, 'Boolean');
+    createMI5Variable(baseNodeId, 'ID', 1404, 'Double');
     createMI5Variable(baseNodeId, 'Name', 'DummySkill', 'String');
     createMI5Variable(baseNodeId, 'Activated', true, 'Boolean');
     server.myexecute = server.engine.addVariableInFolder('SkillOutput0', {
@@ -174,6 +174,8 @@ exports.newOpcuaServer = function() {
 
     // Create Input
     createOpcuaFolder("Input", moduleName);
+    baseNodeId = 'MI5.' + moduleName + '.Input';
+    //createMI5Variable(baseNodeId, 'ConnectionTestInput', true, 'Boolean'); //deactivated in PT
     createOpcuaFolder("SkillInput", "Input");
     createOpcuaFolder("SkillInput0", "SkillInput");
     baseNodeId = 'MI5.' + moduleName + '.Input.SkillInput.SkillInput0';
