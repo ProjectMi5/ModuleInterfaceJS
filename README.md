@@ -20,7 +20,7 @@ Implemented state values: Execute, Ready, Busy, Done, Error
 
 ## Notes
 
-It only works with node-opcua v 0.0.30 (see package.json)
+It only works with node-opcua v 0.0.30 (see package.json).
 
 ## TODO
 
