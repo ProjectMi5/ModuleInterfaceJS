@@ -1,6 +1,10 @@
 # ModuleInterfaceJS
 Generic Module Interface on OPC UA with JavaScript.
 
+## Requirements
+
+it seems to only work with node 0.12.1
+
 ## Installation
 
 1. Clone the git repository: `git clone https://github.com/ProjectMi5/ModuleInterfaceJS.git` 
@@ -18,12 +22,9 @@ In `app.js` use the _get/set-Functions_ to access the state values. Example:
 
 Implemented state values: Execute, Ready, Busy, Done, Error
 
-## Notes
-
-It only works with node-opcua v 0.0.31 (see package.json).
-
 ## TODO
 
 * Configuration file, e.g.: _config.js_
 * Command line interface for a port number, e.g.: `app.js --port=80`
 * SkillInput
+* test higher node versions (e.g. 4.2.6)
